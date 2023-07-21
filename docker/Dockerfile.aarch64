@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
         wget vim usbutils \
         ffmpeg libsm6 libxext6 \
         libboost-dev libhdf5-dev llvm-8 \
-        ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules python3-rosmake
+        ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules python3-rosmake python3-pyqt5
 RUN rosdep install rviz
 RUN rosmake rviz
 # RUN source /opt/ros/noetic/setup.bash
@@ -39,7 +39,7 @@ RUN echo "export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}" >> ~/.bashrc &&\
     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" >> ~/.bashrc
 RUN export CUDA_NVCC_EXECUTABLE=$(which nvcc)
 RUN sh -c "nvcc --version;" && python3 -c "import torch;print('TORCHVERSION:'+torch.__version__);print(torch.cuda.is_available());" \
- && pip3 install -U Cython && pip3 install -U PyQt5
+ && pip3 install -U Cython
 # https://github.com/Arcwy0/visualDet3D https://github.com/Owen-Liuyuxuan/visualDet3D
 RUN git clone https://github.com/Arcwy0/visualDet3D --branch main
 RUN cd visualDet3D && pip3 install -r requirement.txt
