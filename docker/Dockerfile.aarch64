@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
         ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules python3-rosmake
 RUN rosdep install rviz
 RUN rosmake rviz
-RUN source /opt/ros/noetic/setup.bash
+# RUN source /opt/ros/noetic/setup.bash
 RUN roscore &
 RUN export LLVM_CONFIG=/usr/bin/llvm-config-8
 WORKDIR /home/${USER}
