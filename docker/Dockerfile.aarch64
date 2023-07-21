@@ -9,7 +9,7 @@ ARG GID=1001
 ARG PW=user 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN useradd -m ${USER} --uid=${UID} && echo "${USER}:${PW}" | chpasswd
-RUN
+RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
 RUN apt-get update && apt-get install -y \
         wget vim usbutils \
         ffmpeg libsm6 libxext6 \
@@ -23,7 +23,6 @@ RUN export LLVM_CONFIG=/usr/bin/llvm-config-8
 WORKDIR /home/${USER}
 USER root
 RUN cd /home/${USER} && chown -R ${UID}:${GID} ./
-RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
 USER ${UID}:${GID}
 
 ENV PATH="${PATH}:/home/${USER}/.local/bin"
