@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
         wget vim usbutils \
         ffmpeg libsm6 libxext6 \
         libboost-dev libhdf5-dev llvm-8 \
-        ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules
+        ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules python3-rosmake
 RUN rosdep install rviz
 RUN rosmake rviz
 RUN source /opt/ros/indigo/setup.bash
