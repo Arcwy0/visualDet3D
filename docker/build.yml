@@ -1,9 +1,9 @@
 version: "3.8"
 services:
-    pishgu:
-        image: ${ARCH}pishgu:${TAG}
+    yolostereo:
+        image: ${ARCH}yolostereo:${TAG}
         build:
             context: ${PRODUCTION_PATH}
             dockerfile: Dockerfile.${ARCH}
-        container_name: pishgu
+        container_name: yolostereo
         tty: true

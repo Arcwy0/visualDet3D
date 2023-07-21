@@ -1,11 +1,11 @@
 version: "3.8"
 networks: {}
 services:
-    pishgu:
-        image: ${ARCH}pishgu:${TAG}
+    yolostereo:
+        image: ${ARCH}yolostereo:${TAG}
         network_mode: host
         pid: host
-        container_name: pishgu
+        container_name: yolostereo
         env_file: $ENV_FILE
         environment:
             - DISPLAY=$DISPLAY
@@ -17,8 +17,8 @@ services:
         restart: always
         volumes:
             - type: bind
-              source: ${PRODUCTION_PATH}/../datasets
-              target: /home/pishgu/Pishgu_fork/datasets
+              source: ${PRODUCTION_PATH}/../docker
+              target: /home/pishgu/visualDet3D/docker/scripts
             - /dev:/dev:rw
             - /dev:/dev \
         command: /bin/sh

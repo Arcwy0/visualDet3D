@@ -4,7 +4,7 @@
 
 # Set the Dockerfile and image tag
 # DOCKERFILE="Dockerfile.aarch64"
-IMAGE_TAG="pishgu/arm64:pishgu"
+IMAGE_TAG="yolostereo/arm64:pishgu"
 
 cd "$(dirname "$0")"
 cd ..
