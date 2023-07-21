@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
         ffmpeg libsm6 libxext6 \
         libboost-dev libhdf5-dev llvm-8 \
         ros-noetic-catkin python3-catkin-tools ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules python3-rosmake python3-pyqt5 \
-        ros-noetic-image-transport ros-noetic-vision-msgs catkin
+        ros-noetic-image-transport ros-noetic-vision-msgs
 RUN rosdep install rviz
 RUN rosmake rviz
 RUN source /opt/ros/noetic/setup.bash
