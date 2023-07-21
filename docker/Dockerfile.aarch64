@@ -11,6 +11,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN useradd -m ${USER} --uid=${UID} && echo "${USER}:${PW}" | chpasswd
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+SHELL ["/bin/bash", "-l", "-c"]
 RUN source ~/.bashrc
 RUN apt-get update && apt-get install -y \
         wget vim usbutils \
