@@ -1,0 +1,25 @@
+version: "3.8"
+networks: {}
+services:
+    pishgu:
+        image: ${ARCH}pishgu:${TAG}
+        network_mode: host
+        pid: host
+        container_name: pishgu
+        env_file: $ENV_FILE
+        environment:
+            - DISPLAY=$DISPLAY
+        privileged: true
+        tty: true
+        ports:
+            - '8080:8080'
+        ipc: host
+        restart: always
+        volumes:
+            - type: bind
+              source: ${PRODUCTION_PATH}/../datasets
+              target: /home/pishgu/Pishgu_fork/datasets
+            - /dev:/dev:rw
+            - /dev:/dev \
+        command: /bin/sh
+        runtime: nvidia

@@ -1,0 +1,60 @@
+FROM dustynv/ros:noetic-pytorch-l4t-r35.2.1
+
+# Install dependencies
+
+#Set docker container username
+ARG USER=yolostereo
+ARG UID=1001
+ARG GID=1001
+ARG PW=user 
+ARG DEBIAN_FRONTEND=noninteractive
+RUN useradd -m ${USER} --uid=${UID} && echo "${USER}:${PW}" | chpasswd
+RUN
+RUN apt-get update && apt-get install -y \
+        wget vim usbutils \
+        ffmpeg libsm6 libxext6 \
+        libboost-dev libhdf5-dev llvm-8 \
+        ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules \
+        && rm -rf /var/lib/apt/lists/*
+RUN rosdep install rviz
+RUN rosmake rviz
+RUN source /opt/ros/indigo/setup.bash
+RUN roscore &
+RUN export LLVM_CONFIG=/usr/bin/llvm-config-8
+WORKDIR /home/${USER}
+USER root
+RUN cd /home/${USER} && chown -R ${UID}:${GID} ./
+RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
+USER ${UID}:${GID}
+
+ENV PATH="${PATH}:/home/${USER}/.local/bin"
+ENV PATH="${PATH}:/usr/local/bin/cmake"
+ENV PATH="${PATH}:/usr/include/boost"
+ARG TORCH_CUDA_ARCH_LIST='6.1;7.2+PTX'
+RUN export USE_OPENCV=1
+RUN export OPENBLAS_CORETYPE=ARMV8
+RUN export TORCH_CUDA_ARCH_LIST='6.1;7.2+PTX'
+ENV FORCE_CUDA="1"
+RUN export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+RUN export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+RUN echo "export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}" >> ~/.bashrc &&\
+    echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" >> ~/.bashrc
+RUN export CUDA_NVCC_EXECUTABLE=$(which nvcc)
+RUN sh -c "nvcc --version;" && python3 -c "import torch;print('TORCHVERSION:'+torch.__version__);print(torch.cuda.is_available());" \
+ && pip3 install -U Cython && pip3 install -U PyQt5
+# https://github.com/Arcwy0/visualDet3D https://github.com/Owen-Liuyuxuan/visualDet3D
+RUN git clone https://github.com/Arcwy0/visualDet3D --branch main
+RUN cd visualDet3D && pip3 install -r requirement.txt
+RUN cd visualDet3D && ./make.sh
+
+RUN git clone https://github.com/Arcwy0/visualDet3D --branch main
+
+# RUN git clone https://github.com/Arcwy0/visualDet3D_ros
+# RUN cd visualDet3D_ros && catkin_make && source devel/setup.bash
+# RUN cd catkin_vs
+
+USER root
+RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
+SHELL ["/bin/bash", "-l", "-c"]
+USER ${UID}:${GID}
+RUN cd /home/${USER}
