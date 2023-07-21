@@ -10,15 +10,17 @@ ARG PW=user
 ARG DEBIAN_FRONTEND=noninteractive
 RUN useradd -m ${USER} --uid=${UID} && echo "${USER}:${PW}" | chpasswd
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
+RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+RUN source ~/.bashrc
 RUN apt-get update && apt-get install -y \
         wget vim usbutils \
         ffmpeg libsm6 libxext6 \
         libboost-dev libhdf5-dev llvm-8 \
-        ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules python3-rosmake python3-pyqt5 \
+        ros-noetic-catkin python3-catkin-tools ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules python3-rosmake python3-pyqt5 \
         ros-noetic-image-transport ros-noetic-vision-msgs
 RUN rosdep install rviz
 RUN rosmake rviz
-# RUN source /opt/ros/noetic/setup.bash
+RUN source /opt/ros/noetic/setup.bash
 RUN roscore &
 RUN export LLVM_CONFIG=/usr/bin/llvm-config-8
 WORKDIR /home/${USER}
