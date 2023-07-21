@@ -45,7 +45,7 @@ RUN git clone https://github.com/Arcwy0/visualDet3D --branch master
 RUN cd visualDet3D && pip3 install -r requirement.txt
 RUN cd visualDet3D && ./make.sh
 
-RUN git clone https://github.com/Arcwy0/visualDet3D --branch master
+RUN git clone https://github.com/Arcwy0/visualDet3D_ros --branch master
 
 # RUN git clone https://github.com/Arcwy0/visualDet3D_ros
 # RUN cd visualDet3D_ros && catkin_make && source devel/setup.bash
