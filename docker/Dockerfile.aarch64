@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
         ffmpeg libsm6 libxext6 \
         libboost-dev libhdf5-dev llvm-8 \
         ros-noetic-catkin python3-catkin-tools ros-noetic-rviz python3-catkin-pkg-modules python3-rospkg-modules python3-rosmake python3-pyqt5 \
-        ros-noetic-image-transport ros-noetic-vision-msgs
+        ros-noetic-image-transport ros-noetic-vision-msgs python3-osrf-pycommon
 RUN rosdep install rviz
 RUN rosmake rviz
 RUN source /opt/ros/noetic/setup.bash
@@ -50,18 +50,16 @@ RUN cd visualDet3D && pip3 install -r requirement.txt
 RUN cd visualDet3D && ./make.sh
 
 RUN mkdir -p ~/catkin_ws/src
-RUN /bin/bash -c "source /opt/ros/noetic/setup.bash && \
-catkin_make"
-RUN cd ~/catkin_ws/ && catkin_make
-RUN source devel/setup.bash
-
+RUN cd / && ls && bash ros_entrypoint.sh
+RUN source /opt/ros/noetic/setup.bash && cd ~/catkin_ws/ && catkin_make
+RUN source ~/catkin_ws/devel/setup.bash
 USER root
-RUN mv /jetson_inference/ ~/catkin_ws/ &&  mv /ros_deep_learning ~/catkind_ws
-RUN cd / && ros_entrypoint/sh
+RUN mv /jetson-inference/ ~/catkin_ws/ &&  mv /ros_deep_learning ~/catkin_ws
 USER ${UID}:${GID}
 RUN cd ~/catkin_ws/ && git clone https://github.com/Arcwy0/visualDet3D_ros --branch master
-RUN cd ~/catkin_ws/ && catkin_make
-RUN source devel/setup.bash
+RUN cd / && ls && bash ros_entrypoint.sh
+RUN source /opt/ros/noetic/setup.bash && cd ~/catkin_ws/ && catkin_make
+RUN source ~/catkin_ws/devel/setup.bash
 
 USER root
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
