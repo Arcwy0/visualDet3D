@@ -57,7 +57,10 @@ USER root
 RUN mv /jetson-inference/ ~/catkin_ws/ &&  mv /ros_deep_learning ~/catkin_ws
 USER ${UID}:${GID}
 RUN cd ~/catkin_ws/ && git clone https://github.com/Arcwy0/visualDet3D_ros --branch master
-RUN cd / && ls && bash ros_entrypoint.sh
+RUN source /opt/ros/noetic/setup.bash && cd ~/catkin_ws/ && catkin_make
+RUN source ~/catkin_ws/devel/setup.bash
+
+RUN cd ~/catkin_ws/src && git clone https://github.com/Arcwy0/kitti_visualize
 RUN source /opt/ros/noetic/setup.bash && cd ~/catkin_ws/ && catkin_make
 RUN source ~/catkin_ws/devel/setup.bash
 
